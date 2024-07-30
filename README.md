@@ -175,6 +175,11 @@ See the [Examples](#examples) section for different combinations of values.
 
 ```
 
+## Moving to Schema16
+* Download latest SAS download client and CDM Loader 
+* set the schema version parameter to use schema16
+* CDM loader - schema 16 includes column lenghth changes, before moving to schema16 apply database specifics Alter statements.
+
 
 ## Contributing
 

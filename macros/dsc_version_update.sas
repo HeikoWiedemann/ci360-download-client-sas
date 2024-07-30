@@ -1,5 +1,5 @@
 /*-----------------------------------------------------------------------------
- Copyright © 2020, SAS Institute Inc., Cary, NC, USA.  All Rights Reserved.
+ Copyright  2020, SAS Institute Inc., Cary, NC, USA.  All Rights Reserved.
  SPDX-License-Identifier: Apache-2.0
 -----------------------------------------------------------------------------*/
 %macro dsc_version_update(version_num=);
@@ -252,5 +252,126 @@ write version specific changes here */
 			run;
 		%end;
 	%end;
+	%if &version_num. = 5 %then
+	%do;
+		%let ver_hist_ds=dsccnfg.dsc_version_hist;
+		*check if version hist ds exists;
+		%if %sysfunc(exist(&ver_hist_ds.)) %then
+		%do;
+			%* what is the version num ;
+			proc sql noprint;
+				select max(ver_num) into :dsc_ver_num from &ver_hist_ds. ;
+			quit;
+
+			%* if current version is 4 then apply the version 5 updates and in the end set the version as 5 ;
+			%if &dsc_ver_num. = 4 %then
+			%do;
+				%* drop custom_attributes ;
+				%let table_nm=dscwh.custom_attributes;
+				%if %sysfunc(exist(&table_nm.)) %then
+				%do;
+					data &table_nm._bkp;
+						set &table_nm.;
+					run;
+					proc sql;
+						drop table &table_nm.;
+					quit;
+				%end;
+				%* drop goal_details ;
+				%let table_nm=dscwh.goal_details;
+				%if %sysfunc(exist(&table_nm.)) %then
+				%do;
+					data &table_nm._bkp;
+						set &table_nm.;
+					run;
+					proc sql;
+						drop table &table_nm.;
+					quit;
+				%end;
+			
+				%* modify following datasets to change owner_nm & created_user_nm length from 40 to 256 char;
+				%let dataset_list = md_task md_creative md_message md_segment md_segement_map md_event md_dataview md_spot md_asset md_business_context;
+			    %local i dataset;
+			    %do i = 1 %to %sysfunc(countw(&dataset_list)); /* Loop through the dataset list */
+			        %let dataset = %scan(&dataset_list, &i); /* Get the current dataset name */
+			        %let table_nm = dscwh.&dataset; /* Set the table name */
+					%put updating &table_nm.;
+			        %if %sysfunc(exist(&table_nm.)) %then %do; /* Check if dataset exists */
+			            data &table_nm._bkp; /* Create backup dataset */
+			                set &table_nm.;
+			            run;
+			            data &table_nm.; /* Modify original dataset */
+			                attrib owner_nm FORMAT=$256.
+			                    created_user_nm FORMAT=$256.;
+			                set &table_nm.;
+			            run;
+			        %end;
+					%else
+					%do;
+						%put &table_nm. not found ;
+					%end;
+			    %end;
+				%let table_nm=dscwh.EMAIL_OPTOUT_DETAILS;
+				%if %sysfunc(exist(&table_nm.)) %then
+				%do;
+					data &table_nm._bkp;
+						set &table_nm.;
+					run;
+					data &table_nm.;
+						attrib segment_version_id FORMAT=$36.
+			   				  ;
+						set &table_nm.;
+					run;
+				%end;
+				%let table_nm=dscwh.md_segment;
+				%if %sysfunc(exist(&table_nm.)) %then
+				%do;
+					data &table_nm._bkp;
+						set &table_nm.;
+					run;
+					data &table_nm.;
+						attrib segment_cd FORMAT=$60.
+			   				  ;
+						set &table_nm.;
+					run;
+				%end;
+				%let table_nm=dscwh.md_segment_map;
+				%if %sysfunc(exist(&table_nm.)) %then
+				%do;
+					data &table_nm._bkp;
+						set &table_nm.;
+					run;
+					data &table_nm.;
+						attrib segment_map_cd FORMAT=$60.
+			   				  ;
+						set &table_nm.;
+					run;
+				%end;
+
+				%*create version hist ds with version 5;
+				data dsc_version_hist;
+					attrib 	ver_num length= 8.
+						ver_create_dttm length=8. format=datetime25.6;					
+						ver_num =5;
+						ver_create_dttm =datetime();
+				run;
+				proc append base=dsccnfg.dsc_version_hist data=dsc_version_hist;
+				run;
+			%end;
+		%end;
+		%else
+		%do;
+			*create version hist ds with version 5;
+			data dsc_version_hist;
+				attrib 	ver_num length= 8.
+					ver_create_dttm length=8. format=datetime25.6;					
+					ver_num =5;
+					ver_create_dttm =datetime();
+			run;			
+			proc append base=dsccnfg.dsc_version_hist data=dsc_version_hist;
+			run;
+		%end;
+	%end;
+
 %EXIT:	
 %mend;

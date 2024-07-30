@@ -1,10 +1,10 @@
 /*-----------------------------------------------------------------------------
-Copyright © 2020, SAS Institute Inc., Cary, NC, USA.  All Rights Reserved.
+Copyright  2020, SAS Institute Inc., Cary, NC, USA.  All Rights Reserved.
 SPDX-License-Identifier: Apache-2.0
 -----------------------------------------------------------------------------*/
 %macro dsc_download_data(mart_nm=,reset_day_offset=);
-
-	%let client_version=4;
+	/*set client version */
+	%let client_version=5;
 	%put download client version no : &client_version. ;
 
 	%global retcode;
