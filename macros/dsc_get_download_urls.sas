@@ -1,11 +1,43 @@
 /*-----------------------------------------------------------------------------
- Copyright © 2020, SAS Institute Inc., Cary, NC, USA.  All Rights Reserved.
+ Copyright Â© 2020, SAS Institute Inc., Cary, NC, USA.  All Rights Reserved.
  SPDX-License-Identifier: Apache-2.0
 -----------------------------------------------------------------------------*/
 %macro dsc_get_download_urls(part=1);
 	/* part=1 -- for partitioned data urls
 	   part=0 - for non partitioned data urls
 	*/
+
+    %******************************************************************************;
+    %* Get lists of tables to include and exclude;
+    %******************************************************************************;
+	%let inclusion_clause=;
+	filename incl "%sysfunc(pathname(DSCCNFG))/table_inclusion_list.txt";
+	%IF %sysfunc(fexist(incl)) %then %do;
+		data tables_to_include;
+			length entityName $32;
+			infile incl;
+			input entityName;
+		run;
+		%if &SYSNOBS > 0 %then %do;
+			%let inclusion_clause=and upcase(entityName) in (select upcase(entityName) from tables_to_include);
+		%end;
+	%end;
+	filename incl;
+
+	%let exclusion_clause=;
+	filename excl "%sysfunc(pathname(DSCCNFG))/table_exclusion_list.txt";
+	%IF %sysfunc(fexist(excl)) %then %do;
+		data tables_to_exclude;
+			length entityName $32;
+			infile excl;
+			input entityName;
+		run;
+		%if &SYSNOBS > 0 %then %do;
+			%let exclusion_clause=and upcase(entityName) not in (select upcase(entityName) from tables_to_exclude);
+		%end;
+	%end;
+	filename excl;
+
     %******************************************************************************;
     %* Get download urls ;
     %******************************************************************************;
@@ -26,7 +58,7 @@
 	%else
 	%do;
       filename &urlListMap "&DSC_URLLIST_MAPFILE.";
-  %end;
+  	%end;
 
 	%* Create request header ;
 	data _null_;
@@ -140,8 +172,10 @@
 			on	t1.ordinal_items=t2.ordinal_items
 			left join	entities_dataurldetails t3
 			on	t2.ordinal_entities=t3.ordinal_entities
+			where 1=1 &inclusion_clause &exclusion_clause
 			order by t1.ordinal_items ,entityName
 		;quit;
+
 	%end;
 	/* for non partitioned data */
 	%else %if &part = 0 %then
@@ -200,7 +234,12 @@
 			on	t1.ordinal_items=t2.ordinal_items
 			inner join	Entities_dataurldetails t3
 			on	t2.ordinal_entities=t3.ordinal_entities
+			where 1=1 &inclusion_clause &exclusion_clause
 		;quit;
+		data nonPart_details;
+		 set nonPart_details;
+		 	url_id=_n_;
+		run;
 	%end;
 
 	%goto HTTPSUCCESS;
@@ -228,3 +267,4 @@
 %HTTPSUCCESS:
 %ERROREXIT:
 %mend;
+
