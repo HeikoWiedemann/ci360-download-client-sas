@@ -72,7 +72,7 @@ SPDX-License-Identifier: Apache-2.0
 		call symputx('DSC_RESET_URLLIST_MAPFILE',DSC_RESET_URLLIST_MAPFILE);
 	run;
 
-	%let TokenGenMethod=python;
+	%let TokenGenMethod=ds2;
 	%if &TokenGenMethod=python %then
 	%do;
 		/******************************************************************************
@@ -109,7 +109,7 @@ SPDX-License-Identifier: Apache-2.0
 			call symputx('DSC_AUTH_TOKEN',TokenVal);
 		run;
 	%end;
-	/* this needs 9.4M5, can enable this when when the platform requirement is 9.4M5*/
+	/* this needs 9.4M8*/
 	%else %if &TokenGenMethod=ds2 %then
 	%do;
 		data _null_;
