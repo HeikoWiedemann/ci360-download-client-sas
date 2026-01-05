@@ -15,7 +15,7 @@ options compress=yes ;
 	GLOBAL VARIABLES USED BY DOWNLOAD PROGRAM
 ******************************************************************************/
 %global DSC_DOWNLOAD_URL DSC_AGENT_NAME  DSC_TENANT_ID DSC_SECRET_KEY DSC_AUTH_TOKEN
-DSC_PROXY_HOST DSC_PROXY_PORT DSC_PROXY_AUTH DSC_LOAD_START_DTTM PYTHON_PATH
+DSC_PROXY_HOST DSC_PROXY_PORT DSC_PROXY_AUTH DSC_LOAD_START_DTTM
 DSC_HTTP_MAX_RETRY_ATTEMPTS DSC_HTTP_RETRY_WAIT_SEC DSC_FILE_READ_OPTION
 UTILITYLOCATION MART_NM CATEGORY CODE AUTORESET;
 
@@ -41,11 +41,6 @@ proc printto log="&UtilityLocation./logs/&mart_nm._%left(%sysfunc(datetime(),B86
 *****************************************************************************/
 filename dscautos "&UtilityLocation/macros";
 options mautosource sasautos=(dscautos,SASAUTOS);
-
-/******************************************************************************
-	SET PYTHON34 INSTALL LOCATION e.g.%let PYTHON_PATH=%str(c:\Python36\python.exe);
-******************************************************************************/
-%let PYTHON_PATH=%str(C:\Python\Python37\python.exe);
 
 /******************************************************************************
 	SET DOWNLOAD API PARAMETERS  e.g.
