@@ -124,7 +124,7 @@ SPDX-License-Identifier: Apache-2.0
 			call symputx("DSC_AUTH_TOKEN",token);
 		run;
 	%end;
-	%put &DSC_AUTH_TOKEN.;
+	/* %put &DSC_AUTH_TOKEN.; */
 
 	/* Create Config tables if not exits */
 	%if( &mart_nm.= detail or &mart_nm.= dbtReport or %sysfunc(upcase("&mart_nm.")) eq "CDM") %then

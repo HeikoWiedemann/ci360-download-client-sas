@@ -14,7 +14,7 @@ This topic contains the following sections:
 
 
 ### Prerequisites
-1. Install Base SAS 9.4M8 (with Unicode Support).
+1. Install Base SAS 9.4M8 or newer(with Unicode Support).
 2. Enable SAS to use the XCMD System Option. For more information, see the
      [Help Center for SAS 9.4](https://go.documentation.sas.com/?cdcId=pgmsascdc&cdcVersion=9.4_3.4) and search for the
      XCMD option.
@@ -70,25 +70,25 @@ See the [Examples](#examples) section for different combinations of values.
 %let mart_nm=detail;
 %let DSC_LOAD_START_DTTM=%nrquote(12Jan2020 13:00:00);
 %let DSC_LOAD_END_DTTM=%nrquote(12Jan2020 13:59:59);
-%let DSC_SCHEMA_VERSION=1;
+%let DSC_SCHEMA_VERSION=17;
 %let DSC_SUB_HOURLY_MINUTES=60;
 %let RESET_DAY_OFFSET = 60;
 
-%* detail mart with specific range & schema version 3 ;
+%* detail mart with specific range & schema version 17 ;
 %let mart_nm=detail;
 %let DSC_LOAD_START_DTTM=%nrquote(12Jan2020 13:00:00);
 %let DSC_LOAD_END_DTTM=%nrquote(12Jan2020 13:59:59);
 %let RESET_DAY_OFFSET = 60;
 %let DSC_SUB_HOURLY_MINUTES=60;
 
-%let DSC_SCHEMA_VERSION=3;
+%let DSC_SCHEMA_VERSION=17;
 
 
 %* detail mart with specific category ;
 %let mart_nm=detail;
 %let DSC_LOAD_START_DTTM=%nrquote(12Jan2020 13:00:00);
 %let DSC_LOAD_END_DTTM=%nrquote(12Jan2020 13:59:59);
-%let DSC_SCHEMA_VERSION=3;
+%let DSC_SCHEMA_VERSION=17;
 %let RESET_DAY_OFFSET = 60;
 %let DSC_SUB_HOURLY_MINUTES=60;
 
@@ -98,7 +98,7 @@ See the [Examples](#examples) section for different combinations of values.
 %let mart_nm=detail;
 %let DSC_LOAD_START_DTTM=%nrquote(12Jan2020 13:00:00);
 %let DSC_LOAD_END_DTTM=%nrquote(12Jan2020 13:59:59);
-%let DSC_SCHEMA_VERSION=3;
+%let DSC_SCHEMA_VERSION=17;
 %let RESET_DAY_OFFSET = 60;
 %let DSC_SUB_HOURLY_MINUTES=60;
 
@@ -109,7 +109,7 @@ See the [Examples](#examples) section for different combinations of values.
 %let mart_nm=detail;
 %let DSC_LOAD_START_DTTM=%nrquote(12Jan2020 13:00:00);
 %let DSC_LOAD_END_DTTM=%nrquote(12Jan2020 13:59:59);
-%let DSC_SCHEMA_VERSION=3;
+%let DSC_SCHEMA_VERSION=17;
 %let RESET_DAY_OFFSET = 60;
 %let DSC_SUB_HOURLY_MINUTES=60;
 %let CATEGORY=;
@@ -121,7 +121,7 @@ See the [Examples](#examples) section for different combinations of values.
 %let mart_nm=detail;
 %let DSC_LOAD_START_DTTM=%nrquote(12Jan2020 13:00:00);
 %let DSC_LOAD_END_DTTM=%nrquote(12Jan2020 13:59:59);
-%let DSC_SCHEMA_VERSION=3;
+%let DSC_SCHEMA_VERSION=17;
 %let RESET_DAY_OFFSET = 60;
 %let CATEGORY=;
 %let CODE=;
@@ -133,7 +133,7 @@ See the [Examples](#examples) section for different combinations of values.
 %let mart_nm=dbtReport;
 %let DSC_LOAD_START_DTTM=%nrquote(12Jan2020 13:00:00);
 %let DSC_LOAD_END_DTTM=%nrquote(12Jan2020 13:59:59);
-%let DSC_SCHEMA_VERSION=3;
+%let DSC_SCHEMA_VERSION=17;
 %let RESET_DAY_OFFSET = 60;
 %let DSC_SUB_HOURLY_MINUTES=60;
 %let CATEGORY=;
@@ -144,7 +144,7 @@ See the [Examples](#examples) section for different combinations of values.
 %let mart_nm=snapshot;
 %let DSC_LOAD_START_DTTM=;
 %let DSC_LOAD_END_DTTM=;
-%let DSC_SCHEMA_VERSION=4;
+%let DSC_SCHEMA_VERSION=17;
 %let RESET_DAY_OFFSET = 60;
 %let DSC_SUB_HOURLY_MINUTES=60;
 %let CATEGORY=all;
@@ -154,7 +154,7 @@ See the [Examples](#examples) section for different combinations of values.
 %let mart_nm=snapshot;
 %let DSC_LOAD_START_DTTM=;
 %let DSC_LOAD_END_DTTM=;
-%let DSC_SCHEMA_VERSION=5;
+%let DSC_SCHEMA_VERSION=17;
 %let RESET_DAY_OFFSET = 60;
 %let DSC_SUB_HOURLY_MINUTES=60;
 %let CATEGORY=PLAN;
@@ -164,7 +164,7 @@ See the [Examples](#examples) section for different combinations of values.
 %let mart_nm=cdm;
 %let DSC_LOAD_START_DTTM=%nrquote(12Jan2020 13:00:00);
 %let DSC_LOAD_END_DTTM=%nrquote(12Jan2020 13:59:59);;
-%let DSC_SCHEMA_VERSION=6;
+%let DSC_SCHEMA_VERSION=17;
 %let RESET_DAY_OFFSET = 60;
 %let DSC_SUB_HOURLY_MINUTES=60;
 %let CATEGORY=cdm;
